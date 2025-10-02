@@ -91,7 +91,7 @@ services:
       - trendsurf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
-      interval: 30s
+      interval: 10s
       timeout: 5s
       retries: 5
 
