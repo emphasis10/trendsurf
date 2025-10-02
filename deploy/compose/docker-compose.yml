@@ -24,8 +24,7 @@ services:
         condition: service_started
       qdrant:
         condition: service_healthy
-      grobid:
-        condition: service_healthy
+        
     ports:
       - "8000:8000"
     volumes:
@@ -49,7 +48,9 @@ services:
       redis:
         condition: service_started
       api:
-        condition: service_started
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
       qdrant:
         condition: service_healthy
     volumes:
@@ -66,7 +67,7 @@ services:
       - ../../.env
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "3000:3000"
     volumes:
@@ -109,8 +110,8 @@ services:
     networks:
       - trendsurf
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/livez"]
-      interval: 30s
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/6333 && echo -e 'GET /readyz HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q 'HTTP/1.1 200' <&3"]
+      interval: 10s
       timeout: 5s
       retries: 5
 
@@ -124,8 +125,3 @@ services:
       - grobid_cache:/opt/grobid/grobid-home/tmp
     networks:
       - trendsurf
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8070/api/isalive"]
-      interval: 60s
-      timeout: 10s
-      retries: 5
