@@ -10,8 +10,13 @@ if [[ ! -f "$COMPOSE_FILE" ]]; then
   exit 1
 fi
 
-if [[ ! -f "$ENV_FILE" ]]; then
+compose_cmd=(docker compose)
+
+if [[ -f "$ENV_FILE" ]]; then
+  compose_cmd+=(--env-file "$ENV_FILE")
+else
   echo "Warning: $ENV_FILE not found. Services may rely on environment variables defined there." >&2
 fi
 
-exec docker compose -f "$COMPOSE_FILE" up "$@"
+compose_cmd+=(-f "$COMPOSE_FILE" up --build)
+exec "${compose_cmd[@]}" "$@"

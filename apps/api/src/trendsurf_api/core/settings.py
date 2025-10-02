@@ -1,7 +1,8 @@
 from functools import lru_cache
 from typing import Any
 
-from pydantic import AnyHttpUrl, BaseSettings
+from pydantic import AnyHttpUrl, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -40,9 +41,22 @@ class Settings(BaseSettings):
   embed_model: str | None = None
   embed_dimensions: int = 1536
 
-  class Config:
-    env_file = ".env"
-    case_sensitive = False
+  model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
+
+  @field_validator(
+    "ollama_base_url",
+    "openai_base_url",
+    "qdrant_url",
+    "grobid_url",
+    "embed_base_url",
+    mode="before",
+  )
+  @classmethod
+  def empty_string_to_none(cls, value: Any) -> Any:
+    """Normalize blank env values to None so optional URLs stay optional."""
+    if isinstance(value, str) and value.strip() == "":
+      return None
+    return value
 
   @property
   def cors_origins(self) -> list[str]:
