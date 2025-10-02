@@ -1,0 +1,6 @@
+line-length = 100
+select = ["E", "F", "I", "UP", "N", "ASYNC", "B", "BLE", "S", "C4"]
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+"apps/api/tests/*" = ["S101"]
