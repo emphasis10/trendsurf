@@ -1,0 +1,8 @@
+{
+  "id": "tldr.v1",
+  "description": "Generates a 3-4 sentence TL;DR for a research paper.",
+  "schema": {
+    "summary": "string"
+  },
+  "prompt": "Summarize the following paper in 3-4 sentences..."
+}

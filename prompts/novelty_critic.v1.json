@@ -1,0 +1,9 @@
+{
+  "id": "novelty_critic.v1",
+  "description": "Assess novelty of a paper on a 0-10 scale with justification.",
+  "schema": {
+    "score": "number",
+    "justification": "string"
+  },
+  "prompt": "Score the novelty of the paper and explain your reasoning."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "analysis.v1",
+  "description": "Produces structured analysis for a paper (setup, methods, results).",
+  "schema": {
+    "sections": [
+      {
+        "heading": "string",
+        "content": "string"
+      }
+    ]
+  },
+  "prompt": "Create a structured analysis for the supplied paper."
+}
